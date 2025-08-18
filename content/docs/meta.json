@@ -1,0 +1,21 @@
+{
+  "title": "docs",
+  "description": "Documentation for inTake",
+  "keywords": ["inTake", "documentation", "docs"],
+  "root": true,
+  "pages": [
+    "---Introduction---",
+    "./contributors_guide/introduction",
+    "install/system_requirements",
+    "---Setup---",
+    "installation",
+    "---Cloud---",
+    "providers",
+    "aws",
+    "monitoring",
+    "---Server---",
+    "sshKeys",
+    "(Git-Sources)",
+    "[Changelog](https://gointake.ca/changelog)"
+  ]
+}
