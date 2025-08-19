@@ -1,9 +1,55 @@
-:root {
-  --font-mono: 'Roboto Mono', monospace;
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+/* relative to the CSS file, make sure it's correct for your app */
+@source '../../../node_modules/fumadocs-ui/dist/**/*.js';
+
+@theme {
+  --font-mono: 'Geist', monospace;
+
+  --background: 221 50% 11%;
+  --foreground: 240 66.67% 94.12%;
+
+  --card: 217 33% 17%;
+  --card-foreground: 240 100% 97.06%;
+
+  --popover: 217 33% 17%;
+  --popover-foreground: 240 66.67% 94.12%;
+
+  --primary: 258 71% 61%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 235 31.49% 35.49%;
+  --secondary-foreground: 240 34.78% 90.98%;
+
+  --muted: 240 27.59% 22.75%;
+  --muted-foreground: 215 20% 65%;
+
+  --accent: 0 0% 80%;
+  --accent-foreground: 240 42.86% 8.24%;
+
+  --destructive: 0 73.46% 41.37%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 215 25% 27%;
+  --input: 215 25% 27%;
+  --ring: 291 63.72% 42.16%;
+
+  --sidebar-background: 217 33% 17%;
+  --sidebar-foreground: 240 100% 90.78%;
+  --sidebar-primary: 262 51.87% 47.25%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 240 24.49% 38.43%;
+  --sidebar-accent-foreground: 0 0% 87.84%;
+  --sidebar-border: 240 24.49% 38.43%;
+  --sidebar-ring: 291 63.72% 42.16%;
+
+  --radius: 0.75rem;  
 }
 
 * {
   box-sizing: border-box;
+
 }
 
 html {
@@ -21,7 +67,7 @@ body,
 }
 
 body {
-  font-family: system-ui;
+  font-family: geist;
   font-size: 18px;
   line-height: 32px;
 

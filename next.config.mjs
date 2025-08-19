@@ -1,4 +1,8 @@
 import { withPayload } from '@payloadcms/next/withPayload'
+import { withContentCollections } from '@content-collections/next'
+import { createMDX } from 'fumadocs-mdx/next'
+
+const withMDX = createMDX()
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -14,4 +18,6 @@ const nextConfig = {
   },
 }
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+export default withContentCollections(
+  withMDX(withPayload(nextConfig, { devBundleServerPackages: false })),
+)

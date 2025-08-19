@@ -36,5 +36,17 @@
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit"
     }
-  }
+  },
+  "cSpell.words": [
+    "catppuccin",
+    "contentql",
+    "devsafe",
+    "fumadocs",
+    "importmap",
+    "Katex",
+    "myapp",
+    "payloadcms",
+    "shikijs",
+    "Twoslash"
+  ]
 }
