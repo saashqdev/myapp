@@ -1,82 +1,88 @@
-import { source } from '@/lib/source'
-import defaultMdxComponents from 'fumadocs-ui/mdx'
-import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import { type ReactElement } from 'react'
+import { source } from "@/lib/source";
 import {
-  PageArticle,
-  PageBreadcrumb,
-  PageFooter,
-  PageLastUpdate,
-  PageRoot,
-  PageTOC,
-  PageTOCItems,
-  PageTOCPopover,
-  PageTOCPopoverContent,
-  PageTOCPopoverItems,
-  PageTOCPopoverTrigger,
-  PageTOCTitle,
-} from 'fumadocs-ui/layouts/docs/page'
+  DocsPage,
+  DocsBody,
+  DocsDescription,
+  DocsTitle,
+} from "fumadocs-ui/page";
+import { notFound } from "next/navigation";
+import { getMDXComponents } from "@/mdx-components";
+
+import { customMetaDataGenerator } from "@/lib/customMetaDataGenerator";
+import AskChatGPTButton from "@/components/other/AskChatGPTButton";
+import CarbonAds from "@/components/other/carbon";
+import CopyMarkdownButton from "@/components/other/CopyMarkdownButton";
+import { LLMCopyButton, ViewOptions } from "@/components/ai/page-actions";
 
 export default async function Page(props: {
-  params: Promise<{ slug: string[] }>
-}): Promise<ReactElement> {
-  const params = await props.params
-  const page = source.getPage(params.slug)
+  params: Promise<{ slug?: string[] }>;
+}) {
+  const params = await props.params;
+  const page = source.getPage(params.slug);
+  if (!page) notFound();
 
-  if (page == null) {
-    notFound()
-  }
-
-  const { body: Mdx, toc, lastModified } = await page.data.load()
+  const MDX = page.data.body;
 
   return (
-    <PageRoot
-      toc={{
-        toc,
-        single: false,
+    <DocsPage
+      toc={page.data.toc}
+      full={page.data.full}
+      tableOfContent={{
+        style: "clerk",
+      }}
+      breadcrumb={{
+        includeRoot: true,
+        includeSeparator: true,
+      }}
+      footer={{
+        enabled: true,
+      }}
+      editOnGithub={{
+        owner: "preetsuthar17",
+        repo: "hextaui",
+        sha: "master",
+        path: `content/docs/${page.file.path}`,
+      }}
+      lastUpdate={
+        page.data.lastModified ? new Date(page.data.lastModified) : undefined
+      }
+      article={{
+        className: "max-sm:pb-16",
       }}
     >
-      {toc.length > 0 && (
-        <PageTOCPopover>
-          <PageTOCPopoverTrigger />
-          <PageTOCPopoverContent>
-            <PageTOCPopoverItems />
-          </PageTOCPopoverContent>
-        </PageTOCPopover>
-      )}
-      <PageArticle>
-        <PageBreadcrumb />
-        <h1 className="text-3xl font-semibold">{page.data.title}</h1>
-        <p className="text-lg text-fd-muted-foreground">{page.data.description}</p>
-        <Mdx components={{ ...defaultMdxComponents }} />
-        {lastModified && <PageLastUpdate date={lastModified} />}
-        <PageFooter />
-      </PageArticle>
-      {toc.length > 0 && (
-        <PageTOC>
-          <PageTOCTitle />
-          <PageTOCItems variant="clerk" />
-        </PageTOC>
-      )}
-    </PageRoot>
-  )
+      <DocsTitle>{page.data.title}</DocsTitle>
+      <DocsDescription className="mb-0">
+        {page.data.description}
+      </DocsDescription>
+      <div className="flex gap-2">
+        <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
+        <ViewOptions
+          markdownUrl={`${page.url}.mdx`}
+          githubUrl={`https://github.com/preetsuthar17/hextaui/blob/dev/apps/docs/content/docs/${page.path}`}
+        />
+      </div>
+      <CarbonAds format="cover" />
+      <DocsBody>
+        <MDX components={getMDXComponents()} />
+      </DocsBody>
+    </DocsPage>
+  );
 }
 
 export async function generateStaticParams() {
-  return source.getPages().map((page) => ({
-    slug: page.slugs,
-  }))
+  return source.generateParams();
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug?: string[] }> }) {
-  const resolvedParams = await params
-  const page = source.getPage(resolvedParams.slug)
+export async function generateMetadata(props: {
+  params: Promise<{ slug?: string[] }>;
+}) {
+  const params = await props.params;
+  const page = source.getPage(params.slug);
+  if (!page) notFound();
 
-  if (page == null) notFound()
-
-  return {
-    title: `${page.data.title} | inTake`,
+  return customMetaDataGenerator({
+    title: page.data.title,
     description: page.data.description,
-  } satisfies Metadata
+    canonicalUrl: `https://hextaui.com/docs/${page.slugs.join("/")}`,
+  });
 }

@@ -42,11 +42,19 @@
     "contentql",
     "devsafe",
     "fumadocs",
+    "ikiform",
+    "imgur",
     "importmap",
     "Katex",
+    "llms",
     "myapp",
     "payloadcms",
+    "samp",
+    "shiki",
     "shikijs",
-    "Twoslash"
+    "subnav",
+    "Twoslash",
+    "vitepress",
+    "xfmztgsig"
   ]
 }
